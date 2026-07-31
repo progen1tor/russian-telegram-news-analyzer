@@ -1,0 +1,1 @@
+CONFIG_PATH = 'russian-telegram-news-analyzer/config.json'
