@@ -1,3 +1,7 @@
 config.json
 
 src/__pycache__
+src/tests.py
+
+*.session 
+*.session-journal
