@@ -1,4 +1,5 @@
 import asyncio 
+from datetime import datetime 
 from telethon import TelegramClient
 from typing import Any 
 from constants import OFFSET_DATE, CHANNELS
@@ -12,6 +13,7 @@ async def tg_collector(client: TelegramClient, channel_link: str) -> list[dict[s
         reactions_data = reaction_handler(msg.reactions)
         
         channel_records.append({
+            'collected_at': datetime.now(),
             'channel': channel_link,
             'message_id': msg.id, 
             'datetime': msg.date, 
@@ -23,7 +25,7 @@ async def tg_collector(client: TelegramClient, channel_link: str) -> list[dict[s
             'forwards_count': msg.forwards,
             'reactions_count': reactions_data[0],
             'most_used_reaction': reactions_data[1]
-        })
+        })  # ? collected_at ? 
         
     return channel_records
 
