@@ -2,6 +2,7 @@ config.json
 
 src/__pycache__
 src/tests.py
+src/tests.ipynb
 
 *.session 
 *.session-journal
