@@ -20,7 +20,7 @@ async def tg_collector(client: TelegramClient, channel_link: str) -> list[dict[s
             'channel': channel_link,
             'message_id': msg.id, 
             'datetime_utc': msg.date, 
-            'datetime_msk': msg.date.astimezone(MSC_TZ),
+            'datetime_msc': msg.date.astimezone(MSC_TZ),
             'date': msg.date.date(),  
             'text': msg.message,
             'text_length': len(msg.message),
