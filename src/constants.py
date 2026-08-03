@@ -1,3 +1,4 @@
+from zoneinfo import ZoneInfo
 import datetime 
 
 CONFIG_PATH = 'russian-telegram-news-analyzer/config.json'
@@ -12,3 +13,5 @@ CHANNELS: list[str] = [
     'https://t.me/bazabazon',
     'https://t.me/novosti_russia360'
     ]
+
+MSC_TZ = ZoneInfo('Europe/Moscow')

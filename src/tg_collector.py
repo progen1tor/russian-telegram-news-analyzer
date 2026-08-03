@@ -2,7 +2,7 @@ import asyncio
 from datetime import datetime 
 from telethon import TelegramClient
 from typing import Any 
-from constants import OFFSET_DATE, CHANNELS
+from constants import OFFSET_DATE, CHANNELS, MSC_TZ
 from utils import reaction_handler
 
 
@@ -19,7 +19,8 @@ async def tg_collector(client: TelegramClient, channel_link: str) -> list[dict[s
             'collected_at': datetime.now(),
             'channel': channel_link,
             'message_id': msg.id, 
-            'datetime': msg.date, 
+            'datetime_utc': msg.date, 
+            'datetime_msk': msg.date.astimezone(MSC_TZ),
             'date': msg.date.date(),  
             'text': msg.message,
             'text_length': len(msg.message),
