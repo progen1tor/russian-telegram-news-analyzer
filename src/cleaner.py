@@ -10,7 +10,7 @@ def type_corrector(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def stripper(df: pd.DataFrame) -> pd.DataFrame:
-    df.text = df.text.str.strip()
+    df.text = df.text.str.strip().str.replace(r'\n+',  ' | ', regex=True)
     return df 
 
 
