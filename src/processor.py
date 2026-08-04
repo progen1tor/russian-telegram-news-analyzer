@@ -1,4 +1,5 @@
 import pandas as pd 
+import string 
 
 
 def tg_channels_by_message_count(df: pd.DataFrame) -> pd.DataFrame:
@@ -37,3 +38,16 @@ def lonhgest_message(df: pd.DataFrame) -> pd.DataFrame:
     channels = df.groupby('channel', as_index=False)['text_length'].idxmax().set_index('text_length')
     res = channels.join(df, rsuffix='_source')[['channel', 'message_id', 'date', 'text', 'text_length']]
     return res.reset_index(drop=True).sort_values('text_length', ascending=False, ignore_index=True)
+
+
+def most_popular_themes_by_keywords(df: pd.DataFrame) -> pd.DataFrame:
+    copied = df.copy()[['channel', 'message_id', 'text']]
+    
+    copied.text = copied.text.str.replace(rf'[{string.punctuation}]', '', regex=True).str.split()
+    copied = copied.explode('text')
+    copied['is_not_word'] = ~(copied.text.str.match(pat=r'[A-Za-zА-Яа-я]'))
+    copied = copied.loc[~(copied.is_not_word)].drop(columns='is_not_word')
+    
+    groups = copied.groupby('text').agg(keyword_count=('message_id', 'count'))
+    
+    return groups.sort_values('keyword_count', ascending=False)
