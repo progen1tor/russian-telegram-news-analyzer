@@ -1,5 +1,6 @@
 import pandas as pd 
 import string 
+from ru_stopwords import STOPWORDS
 
 
 def tg_channels_by_message_count(df: pd.DataFrame) -> pd.DataFrame:
@@ -42,11 +43,14 @@ def lonhgest_message(df: pd.DataFrame) -> pd.DataFrame:
 
 def most_popular_themes_by_keywords(df: pd.DataFrame) -> pd.DataFrame:
     copied = df.copy()[['channel', 'message_id', 'text']]
-    
+        
     copied.text = copied.text.str.replace(rf'[{string.punctuation}]', '', regex=True).str.split()
     copied = copied.explode('text')
-    copied['is_not_word'] = ~(copied.text.str.match(pat=r'[A-Za-zА-Яа-я]'))
-    copied = copied.loc[~(copied.is_not_word)].drop(columns='is_not_word')
+    
+    # filtering 
+    copied['is_word'] = copied.text.str.match(pat=r'[A-Za-zА-Яа-я]')
+    copied['is_stopword'] = copied.text.str.lower().isin(STOPWORDS)
+    copied = copied.loc[(copied.is_word) & ~(copied.is_stopword)].drop(columns=['is_word', 'is_stopword'])
     
     groups = copied.groupby('text').agg(keyword_count=('message_id', 'count'))
     
