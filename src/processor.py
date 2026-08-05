@@ -38,3 +38,13 @@ def lonhgest_message(df: pd.DataFrame) -> pd.DataFrame:
     channels = df.groupby('channel', as_index=False)['text_length'].idxmax().set_index('text_length')
     res = channels.join(df, rsuffix='_source')[['channel', 'message_id', 'date', 'text', 'text_length']]
     return res.reset_index(drop=True).sort_values('text_length', ascending=False, ignore_index=True)
+
+
+def most_used_reaction_by_channel(df: pd.DataFrame) -> pd.DataFrame:
+    copied = df.copy()
+    copied = copied.loc[copied.most_used_reaction != 'CUSTOM_EMOJI']
+    
+    grouped = copied.groupby(['channel']).most_used_reaction.value_counts().reset_index()
+    grouped['rnk'] = grouped.groupby('channel')['count'].rank(method='dense', ascending=False).astype(int)
+    
+    return grouped.loc[grouped.rnk == 1].drop(columns='rnk').sort_values('count', ascending=False).rename(columns={'count': 'usage'})
