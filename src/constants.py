@@ -15,3 +15,5 @@ CHANNELS: list[str] = [
     ]
 
 MSC_TZ = ZoneInfo('Europe/Moscow')
+
+TOP_MESSAGES = 20
