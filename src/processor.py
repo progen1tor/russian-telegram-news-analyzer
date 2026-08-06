@@ -7,6 +7,11 @@ def tg_channels_by_message_count(df: pd.DataFrame) -> pd.DataFrame:
     return channels.sort_values('message_count', ascending=False)
 
 
+def most_active_dates(df: pd.DataFrame) -> pd.DataFrame:
+    dates = df.groupby('date').agg(message_count=('message_id', 'nunique'))
+    return dates.sort_values('message_count', ascending=False)
+
+
 def most_active_time(df: pd.DataFrame) -> pd.DataFrame:
     copied = df.copy()
     
