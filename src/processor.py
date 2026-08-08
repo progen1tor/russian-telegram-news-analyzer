@@ -42,7 +42,7 @@ def most_popular_message(df: pd.DataFrame) -> pd.DataFrame:
 def most_reacted_message(df: pd.DataFrame) -> pd.DataFrame:
     return best_message_by(df, 'reactions_count').head(20)
 
-def lonhgest_message(df: pd.DataFrame) -> pd.DataFrame:
+def longest_message(df: pd.DataFrame) -> pd.DataFrame:
     return best_message_by(df, 'text_length').head(20)
 
 
