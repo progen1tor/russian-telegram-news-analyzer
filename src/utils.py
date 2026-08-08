@@ -15,6 +15,6 @@ def reaction_handler(reaction_object: types.MessageReactions) -> tuple[int, str 
 
 
 def best_message_by(df: pd.DataFrame, stat_col: str) -> pd.DataFrame:
-    channels = df.groupby('channel', as_index=False)[stat_col].idxmax().set_index(stat_col)
-    result = channels.join(df, rsuffix='_source')[['channel', 'message_id', 'date', 'text', stat_col]]
+    channels = df.groupby(['channel', 'channel_title'], as_index=False)[stat_col].idxmax().set_index(stat_col)
+    result = channels.join(df, rsuffix='_source')[['channel', 'channel_title', 'message_id', 'date', 'text', stat_col]]
     return result.reset_index(drop=True).sort_values(stat_col, ascending=False, ignore_index=True)
