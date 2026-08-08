@@ -56,3 +56,18 @@ def most_used_reaction_by_channel(df: pd.DataFrame) -> pd.DataFrame:
     grouped['rnk'] = grouped.groupby('channel')['count'].rank(method='dense', ascending=False).astype(int)
     
     return grouped.loc[grouped.rnk == 1].drop(columns='rnk').sort_values('count', ascending=False).rename(columns={'count': 'usage'})
+
+
+def engagement_rate(df: pd.DataFrame) -> pd.DataFrame:
+    channels = df.groupby(['channel', 'channel_title']).agg(
+        ttl_views=('views_count','sum'),
+        ttl_forwards=('forwards_count','sum'),
+        ttl_reactions=('reactions_count','sum')
+        )
+    
+    channels['forward_percent'] = round(channels.ttl_forwards / channels.ttl_views * 100, 2) 
+    channels['reaction_percent'] = round(channels.ttl_reactions / channels.ttl_views * 100, 2)
+    channels['engagement_rate'] = round((channels.ttl_forwards + channels.ttl_reactions)  / channels.ttl_views * 100, 2)
+    
+    cols = ['forward_percent', 'reaction_percent', 'engagement_rate']
+    return channels[cols].sort_values(cols[::-1], ascending=False)
