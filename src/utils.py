@@ -14,7 +14,15 @@ def reaction_handler(reaction_object: types.MessageReactions) -> tuple[int, str 
     return 0, None 
 
 
+def grouper(df: pd.DataFrame, index: bool = True) -> pd.Grouper:
+    '''
+    In many analysis functions there are grouping by `channel` & `channel_title`.
+    So it makes sense to create a separate function that performs this grouping.
+    '''
+    return df.groupby(['channel', 'channel_title'], as_index=index)
+
+
 def best_message_by(df: pd.DataFrame, stat_col: str) -> pd.DataFrame:
-    channels = df.groupby(['channel', 'channel_title'], as_index=False)[stat_col].idxmax().set_index(stat_col)
+    channels = grouper(df, False)[stat_col].idxmax().set_index(stat_col)
     result = channels.join(df, rsuffix='_source')[['channel', 'channel_title', 'message_id', 'date', 'text', stat_col]]
     return result.reset_index(drop=True).sort_values(stat_col, ascending=False, ignore_index=True)
