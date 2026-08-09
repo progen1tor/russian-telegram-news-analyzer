@@ -1,10 +1,10 @@
 import pandas as pd
-from .utils import best_message_by
+from .utils import grouper, best_message_by
 
 # === BASE STATISTCIS ===
 
 def tg_channels_by_message_count(df: pd.DataFrame) -> pd.DataFrame:
-    channels = df.groupby(['channel', 'channel_title']).agg(message_count=('message_id', 'count'))
+    channels = grouper(df).agg(message_count=('message_id', 'count'))
     return channels.sort_values('message_count', ascending=False)
 
 
@@ -26,12 +26,12 @@ def most_active_time(df: pd.DataFrame) -> pd.DataFrame:
 # === CHANNELS POPULARITY === 
 
 def tg_channels_by_views_count(df: pd.DataFrame) -> pd.DataFrame:
-    channels = df.groupby(['channel', 'channel_title']).agg(total_views=('views_count', 'sum'))
+    channels = grouper(df).agg(total_views=('views_count', 'sum'))
     return channels.sort_values('total_views', ascending=False)
 
 
 def tg_channels_by_subscribers(df: pd.DataFrame) -> pd.DataFrame:
-    return df.groupby(['channel', 'channel_title']).subscribers_count.max().sort_values(ascending=False).to_frame()
+    return grouper(df).subscribers_count.max().sort_values(ascending=False).to_frame()
 
 
 # === MOST INTERESTING MESSAGES === 
@@ -52,14 +52,14 @@ def most_used_reaction_by_channel(df: pd.DataFrame) -> pd.DataFrame:
     copied = df.copy()
     copied = copied.loc[copied.most_used_reaction != 'CUSTOM_EMOJI']
     
-    grouped = copied.groupby(['channel', 'channel_title']).most_used_reaction.value_counts().reset_index()
+    grouped = grouper(copied).most_used_reaction.value_counts().reset_index()
     grouped['rnk'] = grouped.groupby('channel')['count'].rank(method='dense', ascending=False).astype(int)
     
     return grouped.loc[grouped.rnk == 1].drop(columns='rnk').sort_values('count', ascending=False).rename(columns={'count': 'usage'})
 
 
 def engagement_rate(df: pd.DataFrame) -> pd.DataFrame:
-    channels = df.groupby(['channel', 'channel_title']).agg(
+    channels = grouper(df).agg(
         ttl_views=('views_count','sum'),
         ttl_forwards=('forwards_count','sum'),
         ttl_reactions=('reactions_count','sum')
@@ -71,3 +71,20 @@ def engagement_rate(df: pd.DataFrame) -> pd.DataFrame:
     
     cols = ['forward_percent', 'reaction_percent', 'engagement_rate']
     return channels[cols].sort_values(cols[::-1], ascending=False)
+
+
+def average_views_per_subscriber(df: pd.DataFrame) -> pd.DataFrame:
+    channels = grouper(df).agg(
+        avg_publication_views=('views_count', 'mean'),
+        subscribers=('subscribers_count', 'max')
+    )
+    
+    channels['views_to_subscribers_ratio'] = (channels.avg_publication_views / channels.subscribers).round(3)
+    return channels[['views_to_subscribers_ratio']].sort_values('views_to_subscribers_ratio', ascending=False)
+
+
+def virality_of_publications(df: pd.DataFrame) -> pd.DataFrame:
+    copied = df.copy()
+    
+    copied['virality'] = (copied.forwards_count / copied.views_count).round(3)
+    return copied[['channel', 'channel_title', 'text', 'virality']].sort_values(['virality', 'text'], ascending=[False, True]).iloc[:10]
