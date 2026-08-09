@@ -1,4 +1,5 @@
 from telethon import types
+from pandas.core.groupby import DataFrameGroupBy
 import pandas as pd 
 
 
@@ -14,7 +15,7 @@ def reaction_handler(reaction_object: types.MessageReactions) -> tuple[int, str 
     return 0, None 
 
 
-def grouper(df: pd.DataFrame, index: bool = True) -> pd.Grouper:
+def grouper(df: pd.DataFrame, index: bool = True) -> DataFrameGroupBy:
     '''
     In many analysis functions there are grouping by `channel` & `channel_title`.
     So it makes sense to create a separate function that performs this grouping.
