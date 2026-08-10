@@ -12,6 +12,9 @@ def tg_channels_by_message_count_graph(df: pd.DataFrame) -> None:
         color=['#D32F2F', '#1A237E', '#0D47A1', '#C62828', '#1565C0', '#B71C1C', '#F57C00']
     )
     
+    plt.xlabel('Message Count', labelpad=13)
+    plt.title('Telegram Channels by Message Count')
+    
     plt.savefig(
         f'{GRAPH_PATH}/tg_channels_by_message_count_graph.png', 
         bbox_inches='tight',
