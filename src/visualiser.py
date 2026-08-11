@@ -7,6 +7,7 @@ from constants import GRAPH_PATH
 def tg_channels_by_message_count_graph(df: pd.DataFrame) -> None: 
     data = pr.tg_channels_by_message_count(df).reset_index()
     
+    plt.figure(figsize=(12, 5))
     plt.barh(
         y=data.channel_title[::-1],  
         width=data.message_count[::-1],
@@ -63,7 +64,30 @@ def time_activity_graph(df: pd.DataFrame) -> pd.DataFrame:
     plt.title('Hourly Activity', fontsize=14)
     
     plt.savefig(
-        '../data/graphs/time_activity_graph.png', 
+        f'{GRAPH_PATH}/time_activity_graph.png', 
+        bbox_inches='tight',
+        dpi=300
+    )
+    
+    
+def tg_channels_by_views_count_graph(df: pd.DataFrame) -> None:
+    data = pr.tg_channels_by_views_count(df).reset_index()
+    
+    plt.figure(figsize=(13, 5))
+    
+    plt.barh(   
+        data.channel_title[::-1], 
+        data.total_views[::-1],
+        color=['#D32F2F', '#1A237E', '#0D47A1', '#C62828', '#1565C0', '#B71C1C', '#F57C00']
+    )  
+    
+    plt.ticklabel_format(style='plain', axis='x')  
+    
+    plt.xlabel('Views Count', labelpad=12, fontsize=11)
+    plt.title('Telegram Channels by Views Count', fontsize=14)
+    
+    plt.savefig(
+        f'{GRAPH_PATH}/tg_channels_by_views_count_graph.png', 
         bbox_inches='tight',
         dpi=300
     )
