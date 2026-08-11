@@ -80,7 +80,7 @@ def average_views_per_subscriber(df: pd.DataFrame) -> pd.DataFrame:
     )
     
     channels['views_to_subscribers_ratio'] = (channels.avg_publication_views / channels.subscribers).round(3)
-    return channels[['views_to_subscribers_ratio']].sort_values('views_to_subscribers_ratio', ascending=False)
+    return channels[['subscribers', 'views_to_subscribers_ratio']].sort_values('views_to_subscribers_ratio', ascending=False)
 
 
 def virality_of_publications(df: pd.DataFrame) -> pd.DataFrame:
