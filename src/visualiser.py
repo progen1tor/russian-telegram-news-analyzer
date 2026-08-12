@@ -91,3 +91,30 @@ def tg_channels_by_views_count_graph(df: pd.DataFrame) -> None:
         bbox_inches='tight',
         dpi=300
     )
+    
+    
+def average_views_per_subscriber_graph(df: pd.DataFrame) -> None:
+    data = pr.average_views_per_subscriber(df).reset_index()
+    
+    _, ax = plt.subplots(figsize=(10, 5))
+    
+    scatter_colors = ['#1b9e77', '#d95f02', '#7570b3', '#e7298a', '#66a61e', '#e6ab02', '#a6761d']
+    
+    for ch, color in zip(data.channel_title, scatter_colors):
+        pt = data.loc[data.channel_title == ch]
+        ax.scatter(pt.subscribers, pt.views_to_subscribers_ratio, label=ch, color=color, s=110, marker='s')
+        
+    ax.legend()
+    ax.grid(alpha=.3, ls='--')
+    
+    ax.ticklabel_format(style='plain')
+    
+    ax.set_title('Average Views per Subscriber')  
+    ax.set_xlabel('Subscribers')
+    ax.set_ylabel('Views to Subscribers Ratio', labelpad=13)
+    
+    plt.savefig(
+        f'{GRAPH_PATH}/average_views_per_subscriber_graph.png', 
+        bbox_inches='tight',
+        dpi=300
+    )
