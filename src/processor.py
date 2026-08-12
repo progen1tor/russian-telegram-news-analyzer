@@ -49,13 +49,18 @@ def longest_message(df: pd.DataFrame) -> pd.DataFrame:
 # === AUDIENCE BEHAVIOR === 
 
 def most_used_reaction_by_channel(df: pd.DataFrame) -> pd.DataFrame:
-    copied = df.copy()
-    copied = copied.loc[copied.most_used_reaction != 'CUSTOM_EMOJI']
+    without_custom_reacts = df.loc[df.most_used_reaction != 'CUSTOM_EMOJI']
     
-    grouped = grouper(copied).most_used_reaction.value_counts().reset_index()
+    grouped = grouper(without_custom_reacts).most_used_reaction.value_counts().reset_index()
     grouped['rnk'] = grouped.groupby('channel')['count'].rank(method='dense', ascending=False).astype(int)
     
     return grouped.loc[grouped.rnk == 1].drop(columns='rnk').sort_values('count', ascending=False).rename(columns={'count': 'usage'})
+
+
+def top_5_reactions(df: pd.DataFrame) -> pd.DataFrame:
+    without_custom_reacts = df.loc[df.most_used_reaction != 'CUSTOM_EMOJI']
+    reactions = without_custom_reacts.groupby('most_used_reaction').agg(reaction_count=('most_used_reaction', 'count'))
+    return reactions.sort_values('reaction_count', ascending=False).iloc[:5]
 
 
 def engagement_rate(df: pd.DataFrame) -> pd.DataFrame:
