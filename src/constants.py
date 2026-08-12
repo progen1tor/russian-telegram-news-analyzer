@@ -17,3 +17,5 @@ CHANNELS: list[str] = [
 MSC_TZ = ZoneInfo('Europe/Moscow')
 
 TOP_MESSAGES = 20
+
+PLOT_COLORS = ['#D32F2F', '#1A237E', '#0D47A1', '#C62828', '#1565C0', '#B71C1C', '#F57C00']
