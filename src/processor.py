@@ -59,8 +59,12 @@ def most_used_reaction_by_channel(df: pd.DataFrame) -> pd.DataFrame:
 
 def top_5_reactions(df: pd.DataFrame) -> pd.DataFrame:
     without_custom_reacts = df.loc[df.most_used_reaction != 'CUSTOM_EMOJI']
-    reactions = without_custom_reacts.groupby('most_used_reaction').agg(reaction_count=('most_used_reaction', 'count'))
-    return reactions.sort_values('reaction_count', ascending=False).iloc[:5]
+    reactions = without_custom_reacts.most_used_reaction.value_counts()
+    most_used = reactions.sort_values(ascending=False).iloc[:5]
+    
+    filtered = df.loc[df.most_used_reaction.isin(most_used.index)]
+    channels = filtered.groupby(['channel_title', 'most_used_reaction']).agg(cnt=('most_used_reaction', 'count')).reset_index()
+    return pd.pivot(channels, index='channel_title', columns='most_used_reaction', values='cnt').fillna(0).astype(int)
 
 
 def engagement_rate(df: pd.DataFrame) -> pd.DataFrame:
