@@ -1,4 +1,6 @@
+import warnings 
 import pandas as pd
+import seaborn as sns 
 import matplotlib.pyplot as plt 
 import processor as pr
 from constants import GRAPH_PATH
@@ -118,3 +120,29 @@ def average_views_per_subscriber_graph(df: pd.DataFrame) -> None:
         bbox_inches='tight',
         dpi=300
     )
+    
+    
+def top_5_reactions_graph(df: pd.DataFrame) -> None: 
+    with warnings.catch_warnings():
+        warnings.filterwarnings(action='ignore', module='seaborn')
+
+        data = pr.top_5_reactions(df)
+        ax = sns.heatmap(
+            data,
+            vmin=0, vmax=2900,
+            annot=True, fmt='d',
+            cmap='magma'
+            )
+        
+        for lbl in ax.get_xticklabels():
+            lbl.set_fontfamily('Segoe UI Emoji')
+            
+        ax.set_title('Top-5 Reactions', pad=10)  
+        ax.set_xlabel('Most Used Reaction', labelpad=13)
+        ax.set_ylabel('')
+        
+        plt.savefig(
+            f'{GRAPH_PATH}/top_5_reactions_graph.png', 
+            bbox_inches='tight',
+            dpi=300
+        )
