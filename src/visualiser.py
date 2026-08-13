@@ -3,7 +3,7 @@ import pandas as pd
 import seaborn as sns 
 import matplotlib.pyplot as plt 
 import processor as pr
-from constants import GRAPH_PATH
+from constants import GRAPH_PATH, PLOT_COLORS
 
 
 def tg_channels_by_message_count_graph(df: pd.DataFrame) -> None: 
@@ -13,7 +13,7 @@ def tg_channels_by_message_count_graph(df: pd.DataFrame) -> None:
     plt.barh(
         y=data.channel_title[::-1],  
         width=data.message_count[::-1],
-        color=['#D32F2F', '#1A237E', '#0D47A1', '#C62828', '#1565C0', '#B71C1C', '#F57C00']
+        color=PLOT_COLORS
     )
     
     plt.xlabel('Message Count', labelpad=13)
@@ -24,6 +24,7 @@ def tg_channels_by_message_count_graph(df: pd.DataFrame) -> None:
         bbox_inches='tight',
         dpi=300
     )
+    plt.close()
     
     
 def most_active_dates_graph(df: pd.DataFrame) -> None:
@@ -46,9 +47,10 @@ def most_active_dates_graph(df: pd.DataFrame) -> None:
         bbox_inches='tight',
         dpi=300
     )
+    plt.close()
     
     
-def time_activity_graph(df: pd.DataFrame) -> pd.DataFrame:  
+def time_activity_graph(df: pd.DataFrame) -> None:  
     data = pr.most_active_time(df).reset_index()
     
     data['hour_msc_utc'] = data.hour_msc.astype(str).str.zfill(2) + ':00\n' + data.hour_utc.astype(str).str.zfill(2) + ':00'  
@@ -70,6 +72,7 @@ def time_activity_graph(df: pd.DataFrame) -> pd.DataFrame:
         bbox_inches='tight',
         dpi=300
     )
+    plt.close()
     
     
 def tg_channels_by_views_count_graph(df: pd.DataFrame) -> None:
@@ -80,7 +83,7 @@ def tg_channels_by_views_count_graph(df: pd.DataFrame) -> None:
     plt.barh(   
         data.channel_title[::-1], 
         data.total_views[::-1],
-        color=['#D32F2F', '#1A237E', '#0D47A1', '#C62828', '#1565C0', '#B71C1C', '#F57C00']
+        color=PLOT_COLORS
     )  
     
     plt.ticklabel_format(style='plain', axis='x')  
@@ -93,6 +96,7 @@ def tg_channels_by_views_count_graph(df: pd.DataFrame) -> None:
         bbox_inches='tight',
         dpi=300
     )
+    plt.close()
     
     
 def average_views_per_subscriber_graph(df: pd.DataFrame) -> None:
@@ -111,15 +115,16 @@ def average_views_per_subscriber_graph(df: pd.DataFrame) -> None:
     
     ax.ticklabel_format(style='plain')
     
-    ax.set_title('Average Views per Subscriber')  
+    ax.set_title('Average Publication Views / Subscribers')  
     ax.set_xlabel('Subscribers')
-    ax.set_ylabel('Views to Subscribers Ratio', labelpad=13)
+    ax.set_ylabel('Views / Subscribers', labelpad=13)
     
     plt.savefig(
         f'{GRAPH_PATH}/average_views_per_subscriber_graph.png', 
         bbox_inches='tight',
         dpi=300
     )
+    plt.close()
     
     
 def top_5_reactions_graph(df: pd.DataFrame) -> None: 
@@ -129,7 +134,6 @@ def top_5_reactions_graph(df: pd.DataFrame) -> None:
         data = pr.top_5_reactions(df)
         ax = sns.heatmap(
             data,
-            vmin=0, vmax=2900,
             annot=True, fmt='d',
             cmap='magma'
             )
@@ -137,8 +141,8 @@ def top_5_reactions_graph(df: pd.DataFrame) -> None:
         for lbl in ax.get_xticklabels():
             lbl.set_fontfamily('Segoe UI Emoji')
             
-        ax.set_title('Top-5 Reactions', pad=10)  
-        ax.set_xlabel('Most Used Reaction', labelpad=13)
+        ax.set_title('Top-5 Reaction Usage by Channel', pad=10)  
+        ax.set_xlabel('Reaction', labelpad=13)
         ax.set_ylabel('')
         
         plt.savefig(
@@ -146,3 +150,4 @@ def top_5_reactions_graph(df: pd.DataFrame) -> None:
             bbox_inches='tight',
             dpi=300
         )
+        plt.close()
