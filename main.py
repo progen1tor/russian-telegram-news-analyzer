@@ -25,8 +25,7 @@ news = cln.sorter(cln.stripper(cln.type_corrector(raw_news)))
 
 
 # making dir  
-if not os.path.exists(CSV_RES_PATH):
-    os.makedirs(CSV_RES_PATH, exist_ok=True)
+os.makedirs(CSV_RES_PATH, exist_ok=True)
 
 
 # base statistics:
@@ -35,20 +34,20 @@ prc.most_active_dates(news).to_csv(f'{CSV_RES_PATH}/most_active_dates.csv')
 prc.most_active_time(news).to_csv(f'{CSV_RES_PATH}/most_active_time.csv')
 
 # channels popularity: 
-prc.tg_channels_by_message_count(news).to_csv(f'{CSV_RES_PATH}/tg_channels_by_message_count.csv')
+prc.tg_channels_by_views_count(news).to_csv(f'{CSV_RES_PATH}/tg_channels_by_views_count.csv')
 prc.tg_channels_by_subscribers(news).to_csv(f'{CSV_RES_PATH}/tg_channels_by_subscribers.csv')
 
 # most interesting messages 
-prc.most_popular_message(news).to_csv(f'{CSV_RES_PATH}/most_popular_message.csv')
-prc.most_reacted_message(news).to_csv(f'{CSV_RES_PATH}/most_reacted_message.csv')
-prc.longest_message(news).to_csv(f'{CSV_RES_PATH}/longest_message.csv')
+prc.most_popular_message(news).to_csv(f'{CSV_RES_PATH}/most_popular_message.csv', index=False)
+prc.most_reacted_message(news).to_csv(f'{CSV_RES_PATH}/most_reacted_message.csv', index=False)
+prc.longest_message(news).to_csv(f'{CSV_RES_PATH}/longest_message.csv', index=False)
 
 # audience behavior: 
-prc.most_used_reaction_by_channel(news).to_csv(f'{CSV_RES_PATH}/most_used_reaction_by_channel.csv')
+prc.most_used_reaction_by_channel(news).to_csv(f'{CSV_RES_PATH}/most_used_reaction_by_channel.csv', index=False)
 prc.top_5_reactions(news).to_csv(f'{CSV_RES_PATH}/top_5_reactions.csv')
 prc.engagement_rate(news).to_csv(f'{CSV_RES_PATH}/engagement_rate.csv')
 prc.average_views_per_subscriber(news).to_csv(f'{CSV_RES_PATH}/average_views_per_subscriber.csv')
-prc.virality_of_publications(news).to_csv(f'{CSV_RES_PATH}/virality_of_publications.csv')
+prc.virality_of_publications(news).to_csv(f'{CSV_RES_PATH}/virality_of_publications.csv', index=False)
 
 
 # visualization: 
