@@ -1,7 +1,8 @@
 from zoneinfo import ZoneInfo
 import datetime 
 
-GRAPH_PATH = 'russian-telegram-news-analyzer/data/graphs'
+GRAPH_PATH = 'data/graphs'
+CSV_RES_PATH = 'data/results_csv'
 
 OFFSET_DATE = datetime.datetime.today() - datetime.timedelta(days=90)
 CHANNELS: list[str] = [
