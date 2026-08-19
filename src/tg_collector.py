@@ -3,8 +3,8 @@ from datetime import datetime
 from telethon import TelegramClient
 from telethon.tl.functions.channels import GetFullChannelRequest
 from typing import Any 
-from constants import OFFSET_DATE, CHANNELS, MSC_TZ
-from utils import reaction_handler
+from src.constants import OFFSET_DATE, CHANNELS, MSC_TZ
+from src.utils import reaction_handler
 
 
 async def tg_collector(client: TelegramClient, channel_link: str) -> list[dict[str, Any]]: 

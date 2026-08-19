@@ -1,5 +1,5 @@
 import pandas as pd
-from .utils import grouper, best_message_by
+from src.utils import grouper, best_message_by
 
 # === BASE STATISTCIS ===
 

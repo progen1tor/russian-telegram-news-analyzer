@@ -2,8 +2,8 @@ import warnings
 import pandas as pd
 import seaborn as sns 
 import matplotlib.pyplot as plt 
-import processor as pr
-from constants import GRAPH_PATH, PLOT_COLORS
+import src.processor as pr
+from src.constants import GRAPH_PATH, PLOT_COLORS
 
 
 def tg_channels_by_message_count_graph(df: pd.DataFrame) -> None: 
