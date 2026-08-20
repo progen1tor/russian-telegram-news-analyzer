@@ -5,6 +5,10 @@ src/tests.py
 src/tests.ipynb
 
 data/raw.csv
+data/graphs/
+data/results_csv/
 
 *.session 
 *.session-journal
+
+logs/
