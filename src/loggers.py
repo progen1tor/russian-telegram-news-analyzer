@@ -14,7 +14,7 @@ error_formatter = logging.Formatter(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
-error_handler = logging.FileHandler('logs/errors.log', mode='w', encoding='utf-8')  # тут перезапись логичнее 
+error_handler = logging.FileHandler('logs/errors.log', mode='w', encoding='utf-8')  
 
 error_handler.setFormatter(error_formatter)
 error_logger.addHandler(error_handler)
