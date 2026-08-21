@@ -4,9 +4,8 @@ src/__pycache__
 src/tests.py
 src/tests.ipynb
 
-data/raw.csv
-data/graphs/
-data/results_csv/
+results/graphs/
+results/csv/
 
 *.session 
 *.session-journal
