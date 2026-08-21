@@ -1,8 +1,8 @@
 from zoneinfo import ZoneInfo
 import datetime 
 
-GRAPH_PATH = 'data/graphs'
-CSV_RES_PATH = 'data/results_csv'
+GRAPH_PATH = 'results/graphs'
+CSV_RES_PATH = 'results/csv'
 
 OFFSET_DATE = datetime.datetime.today() - datetime.timedelta(days=90)
 CHANNELS: list[str] = [
